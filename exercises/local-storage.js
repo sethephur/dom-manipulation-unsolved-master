@@ -38,3 +38,43 @@
  */
 
 // Your code goes here...
+
+const cards = document.querySelectorAll('.cardsContainer .card');
+
+cards.forEach((e) => {
+  e.addEventListener('click', () => {
+    e.dataset.fav = e.dataset.fav === 'true' ? 'false' : 'true';
+    updateFavorites();
+    setFavRed();
+  });
+});
+
+function updateFavorites() {
+  const favoriteIds = [];
+  cards.forEach((e) => {
+    if (e.dataset.fav === 'true') {
+      favoriteIds.push(e.id);
+    }
+  });
+  localStorage.setItem('favorites', favoriteIds.join(','));
+}
+
+function getFavorites() {
+  const favoriteIds = localStorage.getItem('favorites');
+  return favoriteIds ? favoriteIds.split(',') : [];
+}
+
+function setFavRed() {
+  const favoriteIds = getFavorites();
+  cards.forEach((e) => {
+    if (favoriteIds.includes(e.id)) {
+      e.classList.add('red');
+      e.dataset.fav = 'true';
+    } else {
+      e.classList.remove('red');
+      e.dataset.fav = 'false';
+    }
+  });
+}
+
+setFavRed();
