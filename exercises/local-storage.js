@@ -39,21 +39,23 @@
 
 // Your code goes here...
 
+const cardsContainer = document.querySelector('.cardsContainer');
 const cards = document.querySelectorAll('.cardsContainer .card');
 
-cards.forEach((e) => {
-  e.addEventListener('click', () => {
-    e.dataset.fav = e.dataset.fav === 'true' ? 'false' : 'true';
+cardsContainer.addEventListener('click', (event) => {
+  const card = event.target.closest('.card');
+  if (card && cardsContainer.contains(card)) {
+    card.dataset.fav = card.dataset.fav === 'true' ? 'false' : 'true';
     updateFavorites();
     setFavRed();
-  });
+  }
 });
 
 function updateFavorites() {
   const favoriteIds = [];
-  cards.forEach((e) => {
-    if (e.dataset.fav === 'true') {
-      favoriteIds.push(e.id);
+  cards.forEach((card) => {
+    if (card.dataset.fav === 'true') {
+      favoriteIds.push(card.id);
     }
   });
   localStorage.setItem('favorites', favoriteIds.join(','));
@@ -66,13 +68,13 @@ function getFavorites() {
 
 function setFavRed() {
   const favoriteIds = getFavorites();
-  cards.forEach((e) => {
-    if (favoriteIds.includes(e.id)) {
-      e.classList.add('red');
-      e.dataset.fav = 'true';
+  cards.forEach((card) => {
+    if (favoriteIds.includes(card.id)) {
+      card.classList.add('red');
+      card.dataset.fav = 'true';
     } else {
-      e.classList.remove('red');
-      e.dataset.fav = 'false';
+      card.classList.remove('red');
+      card.dataset.fav = 'false';
     }
   });
 }
